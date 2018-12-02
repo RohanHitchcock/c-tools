@@ -1,0 +1,34 @@
+# template makefile
+
+CC     = gcc
+CFLAGS = -Wall -std=c99
+# modify the flags here ^
+
+EXE    = a2
+OBJ    = main.o list.o spell.o hashtbl.o
+# add object files here ^
+
+# top (default) target
+all: $(EXE)
+
+# how to link executable
+$(EXE): $(OBJ)
+	$(CC) $(CFLAGS) -o $(EXE) $(OBJ)
+
+# dependencies
+main.o: list.h spell.h
+spell.o: spell.h list.h hashtbl.h
+list.o: list.h
+
+
+# phony targets (these targets do not represent actual files)
+.PHONY: clean cleanly all CLEAN
+
+# `make clean` to remove all object files
+# `make CLEAN` to remove all object and executable files
+# `make cleanly` to `make` then immediately remove object files (inefficient)
+clean:
+	rm -f $(OBJ)
+CLEAN: clean
+	rm -f $(EXE)
+cleanly: all clean
